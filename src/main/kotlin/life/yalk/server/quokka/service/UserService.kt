@@ -2,7 +2,6 @@ package life.yalk.server.quokka.service
 
 import life.yalk.server.quokka.model.User
 import org.springframework.stereotype.Service
-import java.util.*
 
 @Service
 class UserService {
@@ -16,8 +15,8 @@ class UserService {
         return created
     }
 
-    fun getUserOptional(id: Long?): Optional<User> {
-        return Optional.ofNullable(userStorage[id])
+    fun getUser(id: Long?): User? {
+        return userStorage[id]
     }
 
     fun deleteUser(id: Long?): Boolean {

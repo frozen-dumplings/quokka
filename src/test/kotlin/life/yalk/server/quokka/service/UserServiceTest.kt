@@ -1,7 +1,7 @@
 package life.yalk.server.quokka.service
 
 import life.yalk.server.quokka.model.User
-import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
 
@@ -14,26 +14,25 @@ class UserServiceTest {
     fun createUserTest() {
         val user = User()
         val created = userService.createUser(user)
-        Assertions.assertNotEquals(user.id, created.id)
+        assertNotEquals(user.id, created.id)
     }
 
     @Test
     fun getUserOptionalTest() {
         val user = User()
         val created = userService.createUser(user)
-        val foundOptional = userService.getUserOptional(created.id)
-        assert(foundOptional.isPresent)
-        Assertions.assertEquals(created, foundOptional.get())
+        val found = userService.getUser(created.id)
+        assertEquals(created, found)
     }
 
     @Test
     fun deleteUserTest() {
         val user = User()
         val created = userService.createUser(user)
-        val foundOptional = userService.getUserOptional(created.id)
-        assert(foundOptional.isPresent)
-        userService.deleteUser(foundOptional.get().id)
-        val deletedOptional = userService.getUserOptional(created.id)
-        assert(deletedOptional.isEmpty)
+        val found = userService.getUser(created.id)
+        assertNotNull(found)
+        userService.deleteUser(found?.id)
+        val deleted = userService.getUser(created.id)
+        assertNull(deleted)
     }
 }
