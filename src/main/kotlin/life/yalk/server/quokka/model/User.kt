@@ -1,8 +1,6 @@
 package life.yalk.server.quokka.model
 
-class User(id: Long?) {
-    val id: Long? = id
-
-    constructor(): this(null)
-    constructor(id: Long?, user: User): this(id)
+data class User(val id: Long?) {
+    constructor() : this(null)
+    constructor(id: Long?, user: User) : this(id)
 }
