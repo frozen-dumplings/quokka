@@ -1,19 +1,18 @@
 package life.yalk.server.quokka.service
 
 import life.yalk.server.quokka.model.Message
+import life.yalk.server.quokka.repository.MessageRepository
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 @Service
-class MessageService {
+class MessageService(@Autowired val messageRepository: MessageRepository) {
 
-    val messageStorage: MutableMap<Long, List<Message>> = mutableMapOf()
-
-    fun getMessages(user: Long): List<Message> {
-        return messageStorage.getOrDefault(user, emptyList())
+    fun getReceivedMessages(userId: Long): List<Message> {
+        return messageRepository.getMessages(userId)
     }
 
-    fun sendMessage(msg: Message) {
-        val messages = messageStorage.getOrDefault(msg.receiver, emptyList())
-        messageStorage[msg.receiver] = messages + listOf(msg)
+    fun sendMessage(receiverId: Long, message: Message) {
+        messageRepository.addMessage(receiverId, message)
     }
 }

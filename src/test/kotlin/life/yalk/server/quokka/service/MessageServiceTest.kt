@@ -1,30 +1,32 @@
 package life.yalk.server.quokka.service
 
 import life.yalk.server.quokka.model.Message
-import org.junit.jupiter.api.Assertions
+import life.yalk.server.quokka.repository.InMemoryMessageRepository
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
 
 @SpringBootTest
 class MessageServiceTest {
 
-    val messageService = MessageService();
+    private final val messageRepository = InMemoryMessageRepository()
+    private final val messageService = MessageService(messageRepository);
 
     val user1 = 1L
     val user2 = 2L
 
     @Test
     fun getMessagesTest() {
-        Assertions.assertSame(messageService.getMessages(user1), emptyList<Message>())
-        Assertions.assertSame(messageService.getMessages(user2), emptyList<Message>())
+        assertSame(messageService.getReceivedMessages(user1), emptyList<Message>())
+        assertSame(messageService.getReceivedMessages(user2), emptyList<Message>())
     }
 
     @Test
     fun sendTest() {
-        Assertions.assertSame(messageService.getMessages(user1), emptyList<Message>())
-        Assertions.assertSame(messageService.getMessages(user2), emptyList<Message>())
-        messageService.sendMessage(Message(user1, user2))
-        Assertions.assertSame(messageService.getMessages(user1), emptyList<Message>())
-        Assertions.assertSame(messageService.getMessages(user2).size, 1)
+        assertSame(messageService.getReceivedMessages(user1), emptyList<Message>())
+        assertSame(messageService.getReceivedMessages(user2), emptyList<Message>())
+        messageService.sendMessage(user2, Message(user1, user2))
+        assertSame(messageService.getReceivedMessages(user1), emptyList<Message>())
+        assertSame(messageService.getReceivedMessages(user2).size, 1)
     }
 }

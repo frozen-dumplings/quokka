@@ -1,26 +1,22 @@
 package life.yalk.server.quokka.service
 
 import life.yalk.server.quokka.model.User
+import life.yalk.server.quokka.repository.UserRepository
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 @Service
-class UserService {
-
-    private val userStorage: MutableMap<Long, User> = mutableMapOf()
+class UserService(@Autowired val userRepository: UserRepository) {
 
     fun createUser(user: User): User {
-        val newId = userStorage.size.toLong()
-        val created = User(newId, user)
-        userStorage[newId] = created
-        return created
+        return userRepository.createUser(user)
     }
 
-    fun getUser(id: Long?): User? {
-        return userStorage[id]
+    fun getUser(id: Long): User? {
+        return userRepository.getUser(id)
     }
 
-    fun deleteUser(id: Long?): Boolean {
-        val deleted = userStorage.remove(id)
-        return deleted != null
+    fun deleteUser(id: Long): Boolean {
+        return userRepository.deleteUser(id)
     }
 }
